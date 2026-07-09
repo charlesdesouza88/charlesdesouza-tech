@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -67,6 +68,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
