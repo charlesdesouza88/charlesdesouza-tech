@@ -85,13 +85,11 @@ export default function Home() {
                 <div className="relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
                   <Image
                     src="/img/charles.jpg"
-                    alt="Charles DeSouza"
-                    width={630}
-                    height={939}
+                    alt="Charles DeSouza — headshot"
+                    width={1190}
+                    height={1268}
+                    sizes="(max-width: 768px) 100vw, 384px"
                     className="h-auto w-full object-cover"
-                    style={{
-                      filter: "grayscale(0.25) contrast(1.03) brightness(0.95)",
-                    }}
                     priority
                   />
                   <div
