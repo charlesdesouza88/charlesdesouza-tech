@@ -1,5 +1,29 @@
-// Signature "signal" line — a nod to sound. Two seamless tiles drift left.
-// Server component (pure SVG); animation is CSS-driven and respects reduced motion.
+// Signature "sound wave" — an audio amplitude waveform (a nod to Charles the
+// music producer). Two identical tiles drift left seamlessly. Pure SVG; the
+// animation is CSS-driven and respects reduced motion.
+
+const TILE_W = 1200;
+const BAR_COUNT = 80;
+const STEP = TILE_W / BAR_COUNT; // uniform spacing → seamless tiling
+const MID = 24;
+const MAX_AMP = 22;
+
+// Deterministic, musical-looking amplitudes: a slow envelope × finer detail,
+// with a couple of louder "peaks" so it reads like real audio, not a sine.
+// Geometry is rounded to fixed precision so the server and client render
+// byte-identical values (avoids float-serialization hydration mismatches).
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const BARS = Array.from({ length: BAR_COUNT }, (_, i) => {
+  const t = i / BAR_COUNT;
+  const envelope = 0.35 + 0.65 * Math.abs(Math.sin(t * Math.PI * 3));
+  const detail = 0.55 + 0.45 * Math.sin(i * 1.7) * Math.cos(i * 0.6);
+  const amp = Math.min(1, Math.max(0.09, envelope * detail)) * MAX_AMP;
+  return {
+    x: r2(STEP / 2 + i * STEP - 2),
+    y: r2(MID - amp),
+    h: r2(amp * 2),
+  };
+});
 
 export default function Waveform({
   color = "var(--ember)",
@@ -10,10 +34,6 @@ export default function Waveform({
   className?: string;
   opacity?: number;
 }) {
-  // One tile is 600 wide; we render two side by side and drift by -50%.
-  const tile =
-    "M0 20 Q 15 20 22 20 T 44 20 Q 52 20 58 6 T 72 20 Q 80 20 96 20 T 130 20 Q 142 20 150 34 T 168 20 Q 182 20 210 20 T 250 20 Q 262 20 270 8 T 288 20 Q 300 20 330 20 T 372 20 Q 386 20 396 32 T 416 20 Q 430 20 470 20 T 520 20 Q 534 20 542 10 T 560 20 Q 574 20 600 20";
-
   return (
     <div
       className={`w-full overflow-hidden ${className}`}
@@ -21,20 +41,24 @@ export default function Waveform({
       style={{ opacity }}
     >
       <div className="wave-track flex" style={{ width: "200%" }}>
-        {[0, 1].map((i) => (
+        {[0, 1].map((tile) => (
           <svg
-            key={i}
-            viewBox="0 0 600 40"
+            key={tile}
+            viewBox={`0 0 ${TILE_W} ${MID * 2}`}
             preserveAspectRatio="none"
-            className="h-6 w-1/2 shrink-0"
+            className="h-7 w-1/2 shrink-0"
           >
-            <path
-              d={tile}
-              fill="none"
-              stroke={color}
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
+            {BARS.map((bar, i) => (
+              <rect
+                key={i}
+                x={bar.x}
+                y={bar.y}
+                width={4}
+                height={bar.h}
+                rx={2}
+                fill={color}
+              />
+            ))}
           </svg>
         ))}
       </div>

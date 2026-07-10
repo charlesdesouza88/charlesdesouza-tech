@@ -43,10 +43,10 @@ export default function Hero() {
       </h1>
 
       <p className="mt-9 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-        Full-stack &amp; blockchain developer, product manager, and 25-year chef.
-        One practice —{" "}
-        <span className="text-ink">mise en place, build, refine</span> — across
-        three very different mediums.
+        Most engineers come from one world. I come from three — code, music, and
+        the kitchen. A full-stack &amp; blockchain developer and product manager
+        who learns fast, ships under pressure, and builds{" "}
+        <span className="text-ink">software people actually want to use.</span>
       </p>
 
       <div className="mt-10 flex flex-wrap items-center gap-4">
