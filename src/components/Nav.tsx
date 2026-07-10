@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import CmdMark from "./CmdMark";
 
 const links = [
   { href: "#work", label: "Work" },
@@ -43,9 +44,10 @@ export default function Nav() {
         className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8"
       >
         <a href="#top" className="group flex items-center gap-2.5">
-          <span className="grid h-7 w-7 place-items-center rounded-full border border-[var(--line-strong)] font-mono text-[13px] text-ember transition-colors group-hover:border-ember">
-            cd
-          </span>
+          <CmdMark
+            title="CMD — Charles M. DeSouza"
+            className="h-7 w-7 text-ember transition-transform duration-300 group-hover:rotate-90"
+          />
           <span className="font-mono text-xs tracking-wider text-muted">
             charles<span className="text-faint">desouza.tech</span>
           </span>
