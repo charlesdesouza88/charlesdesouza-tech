@@ -461,6 +461,14 @@ export default function Home() {
                 >
                   {profile.email}
                 </a>
+                <a
+                  href="/Charles_DeSouza_Resume.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-[var(--line-strong)] px-7 py-3.5 font-mono text-sm text-ink transition-colors hover:border-ember hover:text-ember"
+                >
+                  Download résumé ↓
+                </a>
               </div>
 
               <div className="mt-12 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">

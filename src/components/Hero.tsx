@@ -62,6 +62,14 @@ export default function Hero() {
         >
           Get in touch
         </a>
+        <a
+          href="/Charles_DeSouza_Resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="px-2 py-3 font-mono text-sm text-muted underline decoration-[var(--line-strong)] underline-offset-4 transition-colors hover:text-ember hover:decoration-ember"
+        >
+          Résumé ↓
+        </a>
       </div>
 
       <div className="mt-16 flex items-center gap-6">
