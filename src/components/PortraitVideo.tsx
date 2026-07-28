@@ -39,9 +39,9 @@ export default function PortraitVideo({
       <img
         src={poster}
         alt={alt}
-        width={498}
-        height={544}
-        className="h-auto w-full object-cover"
+        width={720}
+        height={1280}
+        className="aspect-[9/16] h-auto w-full object-cover object-top"
       />
     );
   }
@@ -49,9 +49,9 @@ export default function PortraitVideo({
   return (
     <video
       ref={videoRef}
-      className="h-auto w-full object-cover"
-      width={498}
-      height={544}
+      className="aspect-[9/16] h-auto w-full object-cover object-top"
+      width={720}
+      height={1280}
       autoPlay
       muted
       loop
