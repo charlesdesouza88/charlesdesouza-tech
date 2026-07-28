@@ -334,11 +334,13 @@ export default function Home() {
             <Reveal>
               <SectionLabel>Trajectory</SectionLabel>
               <h2 className="font-display text-[clamp(2rem,5vw,3.4rem)] font-light leading-[1.05]">
-                Chef to product, by way of code.
+                Full-stack roots.
+                <br />
+                Product focus.
               </h2>
               <p className="mt-6 text-muted">
-                A non-linear path, on purpose. Each stop taught the next one
-                something.
+                From shipping apps to leading product — each role sharpened how
+                I scope, build, and deliver.
               </p>
             </Reveal>
 
