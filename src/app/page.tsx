@@ -3,6 +3,7 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import Waveform from "@/components/Waveform";
+import PortraitVideo from "@/components/PortraitVideo";
 import {
   profile,
   socials,
@@ -83,15 +84,7 @@ export default function Home() {
             <Reveal delay={120}>
               <figure className="relative mx-auto max-w-sm">
                 <div className="relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
-                  <Image
-                    src="/img/charles.jpg"
-                    alt="Charles DeSouza — headshot"
-                    width={1190}
-                    height={1268}
-                    sizes="(max-width: 768px) 100vw, 384px"
-                    className="h-auto w-full object-cover"
-                    priority
-                  />
+                  <PortraitVideo alt="Charles DeSouza — portrait" />
                   <div
                     className="pointer-events-none absolute inset-0"
                     style={{
