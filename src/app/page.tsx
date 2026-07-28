@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
@@ -7,7 +8,8 @@ import PortraitVideo from "@/components/PortraitVideo";
 import {
   profile,
   socials,
-  projects,
+  featuredProjects,
+  moreProjects,
   hackathons,
   experience,
   facets,
@@ -116,77 +118,169 @@ export default function Home() {
               The proof is in the projects.
             </h2>
             <p className="mt-4 max-w-xl text-muted">
-              My favorite builds sit where my worlds overlap — a school
-              ecosystem built by its own teacher, kitchen software written by
-              the chef who needed it, a music marketplace on-chain.
+              Three flagships where my worlds overlap — a school ecosystem
+              built by its teacher, kitchen software written by the chef who
+              needed it, a music marketplace on-chain.
             </p>
           </Reveal>
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-2">
-            {projects.map((p, idx) => (
+          <div className="mt-14 grid gap-6 lg:grid-cols-3">
+            {featuredProjects.map((p, idx) => (
               <Reveal
                 key={p.name}
-                delay={(idx % 2) * 90}
-                className="group relative flex flex-col rounded-2xl border border-[var(--line)] bg-surface/60 p-6 transition-colors hover:border-[var(--line-strong)] sm:p-7"
+                delay={idx * 90}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-surface/60 transition-colors hover:border-[var(--line-strong)]"
               >
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <span
-                    className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em]"
-                    style={{ color: bridgeColor[p.bridge ?? "code"] }}
+                {p.image && (
+                  <Link
+                    href={`/work/${p.slug}`}
+                    className="relative aspect-[16/10] overflow-hidden border-b border-[var(--line)]"
                   >
-                    <span
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ background: bridgeColor[p.bridge ?? "code"] }}
+                    <Image
+                      src={p.image}
+                      alt={`${p.name} preview`}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                     />
-                    {bridgeLabel[p.bridge ?? "code"]}
-                  </span>
-                  <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-wide text-faint">
-                    {p.live && (
-                      <a
-                        href={p.live}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`${p.name} — live demo (opens in new tab)`}
-                        className="-m-2 p-2 text-resonance transition-colors hover:text-ink"
-                      >
-                        Live ↗
-                      </a>
-                    )}
-                    {p.repo && (
-                      <a
-                        href={p.repo}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={`${p.name} — source code (opens in new tab)`}
-                        className="-m-2 p-2 transition-colors hover:text-ink"
-                      >
-                        Code ↗
-                      </a>
-                    )}
-                  </div>
-                </div>
+                    <div
+                      className="pointer-events-none absolute inset-0"
+                      style={{
+                        background:
+                          "linear-gradient(180deg, transparent 50%, color-mix(in srgb, var(--surface) 75%, transparent))",
+                      }}
+                    />
+                  </Link>
+                )}
 
-                <h3 className="font-display text-2xl text-ink">{p.name}</h3>
-                <p className="mt-1 font-mono text-xs uppercase tracking-wide text-faint">
-                  {p.kind}
-                </p>
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
-                  {p.blurb}
-                </p>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {p.stack.map((s) => (
+                <div className="flex flex-1 flex-col p-6 sm:p-7">
+                  <div className="mb-4 flex items-center justify-between gap-3">
                     <span
-                      key={s}
-                      className="rounded-full border border-[var(--line)] px-2.5 py-1 font-mono text-[11px] text-muted"
+                      className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em]"
+                      style={{ color: bridgeColor[p.bridge ?? "code"] }}
                     >
-                      {s}
+                      <span
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{
+                          background: bridgeColor[p.bridge ?? "code"],
+                        }}
+                      />
+                      {bridgeLabel[p.bridge ?? "code"]}
                     </span>
-                  ))}
+                    <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-wide text-faint">
+                      {p.live && (
+                        <a
+                          href={p.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${p.name} — live demo (opens in new tab)`}
+                          className="-m-2 p-2 text-resonance transition-colors hover:text-ink"
+                        >
+                          Live ↗
+                        </a>
+                      )}
+                      {p.repo && (
+                        <a
+                          href={p.repo}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`${p.name} — source code (opens in new tab)`}
+                          className="-m-2 p-2 transition-colors hover:text-ink"
+                        >
+                          Code ↗
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <h3 className="font-display text-2xl text-ink">
+                    {p.slug ? (
+                      <Link
+                        href={`/work/${p.slug}`}
+                        className="transition-colors hover:text-ember"
+                      >
+                        {p.name}
+                      </Link>
+                    ) : (
+                      p.name
+                    )}
+                  </h3>
+                  <p className="mt-1 font-mono text-xs uppercase tracking-wide text-faint">
+                    {p.kind}
+                  </p>
+                  <p className="mt-4 flex-1 text-sm leading-relaxed text-muted">
+                    {p.blurb}
+                  </p>
+
+                  <div className="mt-6 flex flex-wrap items-center gap-2">
+                    {p.stack.slice(0, 4).map((s) => (
+                      <span
+                        key={s}
+                        className="rounded-full border border-[var(--line)] px-2.5 py-1 font-mono text-[11px] text-muted"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+
+                  {p.slug && (
+                    <Link
+                      href={`/work/${p.slug}`}
+                      className="mt-6 inline-flex font-mono text-sm text-ember transition-colors hover:text-ink"
+                    >
+                      Read case study →
+                    </Link>
+                  )}
                 </div>
               </Reveal>
             ))}
           </div>
+
+          <Reveal className="mt-16">
+            <p className="eyebrow mb-6">More builds</p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {moreProjects.map((p) => (
+                <div
+                  key={p.name}
+                  className="flex flex-col rounded-xl border border-[var(--line)] bg-surface/40 p-5 transition-colors hover:border-[var(--line-strong)]"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-display text-xl text-ink">{p.name}</h3>
+                      <p className="mt-0.5 font-mono text-[11px] uppercase tracking-wide text-faint">
+                        {bridgeLabel[p.bridge ?? "code"]} · {p.kind}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2 font-mono text-[11px] uppercase tracking-wide text-faint">
+                      {p.live && (
+                        <a
+                          href={p.live}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-resonance transition-colors hover:text-ink"
+                        >
+                          Live ↗
+                        </a>
+                      )}
+                      {p.repo && (
+                        <a
+                          href={p.repo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="transition-colors hover:text-ink"
+                        >
+                          Code ↗
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                    {p.blurb}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
 
           <Reveal className="mt-14">
             <figure className="relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">

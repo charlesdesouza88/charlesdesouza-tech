@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import CmdMark from "./CmdMark";
 
 const links = [
-  { href: "#work", label: "Work" },
-  { href: "#method", label: "Method" },
-  { href: "#facets", label: "Facets" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#work", label: "Work" },
+  { href: "/#method", label: "Method" },
+  { href: "/#facets", label: "Facets" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Nav() {
@@ -43,7 +44,7 @@ export default function Nav() {
         aria-label="Primary"
         className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8"
       >
-        <a href="#top" className="group flex items-center gap-2.5">
+        <Link href="/#top" className="group flex items-center gap-2.5">
           <CmdMark
             title="CMD — Charles M. DeSouza"
             className="h-7 w-7 text-ember transition-transform duration-300 group-hover:rotate-90"
@@ -51,18 +52,18 @@ export default function Nav() {
           <span className="font-mono text-xs tracking-wider text-muted">
             charles<span className="text-faint">desouza.tech</span>
           </span>
-        </a>
+        </Link>
 
         {/* Desktop links */}
         <div className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
-            <a
+            <Link
               key={l.href}
               href={l.href}
               className="py-2 font-mono text-xs uppercase tracking-[0.15em] text-muted transition-colors hover:text-ink"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
           <a
             href="mailto:charlesdesouza88@gmail.com"
@@ -110,13 +111,13 @@ export default function Nav() {
         <ul>
           {links.map((l) => (
             <li key={l.href}>
-              <a
+              <Link
                 href={l.href}
                 onClick={() => setOpen(false)}
                 className="block py-3.5 font-mono text-sm uppercase tracking-[0.15em] text-muted transition-colors hover:text-ink"
               >
                 {l.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

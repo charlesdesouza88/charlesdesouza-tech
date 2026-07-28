@@ -17,16 +17,24 @@ export const socials = [
   { label: "Instagram", handle: "gurugizmo", href: "https://www.instagram.com/gurugizmo" },
 ];
 
+export type Bridge = "sound" | "kitchen" | "code" | "teaching";
+
 // Featured work — the bridge projects lead, live demos first.
 export type Project = {
   name: string;
   kind: string;
-  bridge?: "sound" | "kitchen" | "code" | "teaching";
+  bridge?: Bridge;
   blurb: string;
   stack: string[];
   live?: string;
   repo?: string;
   year?: string;
+  /** Path under /public for card / case study hero */
+  image?: string;
+  /** Case study route slug when a deep page exists */
+  slug?: string;
+  /** Show in the primary featured grid */
+  featured?: boolean;
 };
 
 export const projects: Project[] = [
@@ -39,6 +47,9 @@ export const projects: Project[] = [
     stack: ["Python", "Flask", "PostgreSQL", "Jinja2", "Railway", "JavaScript"],
     live: "https://mister-wiz-quiz.vercel.app",
     repo: "https://github.com/charlesdesouza88/MW-report-copiler",
+    image: "/img/work/mister-wiz.png",
+    slug: "mister-wiz",
+    featured: true,
   },
   {
     name: "soundChain",
@@ -48,6 +59,9 @@ export const projects: Project[] = [
       "A marketplace for musicians to sell work and issue membership NFTs, with royalties enforced on-chain. Built where my two lives meet — music production and blockchain engineering.",
     stack: ["Algorand", "PyTeal", "TypeScript", "React", "IPFS"],
     repo: "https://github.com/charlesdesouza88/soundChain",
+    image: "/img/work/soundchain-cover.png",
+    slug: "soundchain",
+    featured: true,
   },
   {
     name: "ChefTrack + ChefCalc",
@@ -57,6 +71,9 @@ export const projects: Project[] = [
       "Software I built as an Executive Chef to fix problems I lived every day: inventory that drifts, menu costs that guess. ChefTrack tracks stock; ChefCalc prices every plate to the gram. Cut waste and errors across a working kitchen.",
     stack: ["JavaScript", "React", "Tailwind", "Flask"],
     repo: "https://github.com/charlesdesouza88/Cheftrack",
+    image: "/img/work/cheftrack-cover.png",
+    slug: "cheftrack",
+    featured: true,
   },
   {
     name: "theVault",
@@ -76,6 +93,7 @@ export const projects: Project[] = [
     stack: ["TypeScript", "React", "Vercel"],
     live: "https://tem-vaga.vercel.app",
     repo: "https://github.com/charlesdesouza88/Tem_vaga",
+    image: "/img/work/tem-vaga.png",
   },
   {
     name: "CNPJ Lookup",
@@ -93,9 +111,11 @@ export const projects: Project[] = [
     blurb:
       "A smart contract that splits royalties across contributors automatically — the payout logic a fair collaboration needs.",
     stack: ["Algorand", "Smart Contracts"],
-    repo: "https://github.com/charlesdesouza88",
   },
 ];
+
+export const featuredProjects = projects.filter((p) => p.featured);
+export const moreProjects = projects.filter((p) => !p.featured);
 
 export const hackathons = ["Harvard 2024", "Polkadot 2025", "Stacks", "Solana"];
 
@@ -179,7 +199,7 @@ export type Facet = {
 export const facets: Facet[] = [
   {
     key: "engineer",
-    glyph: "■", // ■
+    glyph: "■",
     title: "The Engineer",
     tag: "full-stack · blockchain · product",
     line: "Takes systems apart, understands them, and builds them back cleaner.",
@@ -196,7 +216,7 @@ export const facets: Facet[] = [
   },
   {
     key: "producer",
-    glyph: "○", // ○
+    glyph: "○",
     title: "The Producer",
     tag: "music production · sound healing",
     line: "Hears the whole arrangement before the first note is placed.",
@@ -213,7 +233,7 @@ export const facets: Facet[] = [
   },
   {
     key: "chef",
-    glyph: "▲", // ▲
+    glyph: "▲",
     title: "The Chef",
     tag: "25 years · executive chef",
     line: "Runs a kitchen like a system: mise en place, then execute under fire.",
@@ -247,3 +267,107 @@ export const education = [
   "Full-Stack Web Development Bootcamps",
   "Associate of Arts — Cape Cod Community College",
 ];
+
+export type CaseStudy = {
+  slug: string;
+  name: string;
+  kind: string;
+  bridge: Bridge;
+  heroImage: string;
+  heroAlt: string;
+  summary: string;
+  role: string;
+  period: string;
+  problem: string;
+  approach: string[];
+  outcome: string[];
+  stack: string[];
+  live?: string;
+  repo?: string;
+};
+
+export const caseStudies: CaseStudy[] = [
+  {
+    slug: "mister-wiz",
+    name: "Mister Wiz Ecosystem",
+    kind: "EdTech platform",
+    bridge: "teaching",
+    heroImage: "/img/work/mister-wiz.png",
+    heroAlt: "Mister Wiz gamified English quiz app interface",
+    summary:
+      "A digital ecosystem for an English school in Brazil — built by the mentor who uses it every week: report cards, teacher dashboard, and a live quiz app.",
+    role: "English Mentor & EdTech Developer",
+    period: "2026 — Present",
+    problem:
+      "Teachers were spending hours turning spreadsheet grades into student reports. The school needed tools that matched how they already taught — not another generic LMS that nobody would open.",
+    approach: [
+      "Mapped the real reporting workflow with teachers: CSV in, print-ready report cards out, with per-skill radar charts parents can read at a glance.",
+      "Shipped a Flask + PostgreSQL report compiler and teacher dashboard on Railway so staff could run reports without developer help.",
+      "Built a gamified quiz app students actually use in class — live on Vercel — so practice and assessment stay in the same ecosystem.",
+    ],
+    outcome: [
+      "Reporting that used to take an afternoon now runs from a CSV upload to print-ready cards.",
+      "Teachers and students use the tools weekly — the ecosystem is live, not a demo.",
+      "One person owns pedagogy and product, so features ship against real classroom friction.",
+    ],
+    stack: ["Python", "Flask", "PostgreSQL", "Jinja2", "Railway", "JavaScript", "Vercel"],
+    live: "https://mister-wiz-quiz.vercel.app",
+    repo: "https://github.com/charlesdesouza88/MW-report-copiler",
+  },
+  {
+    slug: "soundchain",
+    name: "soundChain",
+    kind: "Decentralized music marketplace",
+    bridge: "sound",
+    heroImage: "/img/work/soundchain-cover.png",
+    heroAlt: "soundChain — music marketplace on-chain cover",
+    summary:
+      "Where music production meets blockchain: musicians sell work, issue membership NFTs, and get royalties enforced on-chain — no middleman rewriting the split.",
+    role: "Full-stack & smart contract engineer",
+    period: "Hackathon → ongoing",
+    problem:
+      "Independent musicians lose revenue to opaque platforms and manual royalty splits. Membership and ownership should travel with the work — not live in a spreadsheet someone forgets to update.",
+    approach: [
+      "Designed a marketplace flow for listing audio, selling access, and minting membership NFTs on Algorand.",
+      "Encoded royalty splits in PyTeal so contributors get paid according to the contract, not a handshake.",
+      "Stored media on IPFS and built a TypeScript/React front end so the chain layer stays invisible to the musician.",
+    ],
+    outcome: [
+      "A working DApp that joins two of my lives — studio production and on-chain engineering.",
+      "Proven royalty logic that can be reused for collaborations and membership communities.",
+      "Shipped under hackathon pressure, then refined as a portfolio flagship for music × code.",
+    ],
+    stack: ["Algorand", "PyTeal", "TypeScript", "React", "IPFS"],
+    repo: "https://github.com/charlesdesouza88/soundChain",
+  },
+  {
+    slug: "cheftrack",
+    name: "ChefTrack + ChefCalc",
+    kind: "Kitchen operations suite",
+    bridge: "kitchen",
+    heroImage: "/img/work/cheftrack-cover.png",
+    heroAlt: "ChefTrack — kitchen operations suite cover",
+    summary:
+      "Internal software written by the executive chef who needed it: inventory that stays honest, and plate costing accurate to the gram.",
+    role: "Executive Chef / Internal Product Builder",
+    period: "2023 — 2025",
+    problem:
+      "Dennis Yacht Club ran on tribal knowledge and drifting spreadsheets. Inventory walked; menu prices guessed; service for 200+ guests left no time for admin that didn't earn its keep.",
+    approach: [
+      "Built ChefTrack to track stock in the language of a working kitchen — counts, par levels, and what walks out the door.",
+      "Built ChefCalc to cost every plate to the gram so menu engineering stopped being a gut call.",
+      "Shipped React + Flask tools the line could use mid-service — mise en place for the data layer.",
+    ],
+    outcome: [
+      "Improved scheduling, forecasting, and team coordination by ~30% through automation.",
+      "Cut waste and costing errors across a kitchen running events for 200+ guests.",
+      "Proof that domain expertise + code ships tools people actually open under pressure.",
+    ],
+    stack: ["JavaScript", "React", "Tailwind", "Flask"],
+    repo: "https://github.com/charlesdesouza88/Cheftrack",
+  },
+];
+
+export function getCaseStudy(slug: string) {
+  return caseStudies.find((c) => c.slug === slug);
+}
