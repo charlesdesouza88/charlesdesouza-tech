@@ -38,15 +38,15 @@ export default function Waveform({
     <div
       className={`w-full overflow-hidden ${className}`}
       aria-hidden="true"
-      style={{ opacity }}
+      style={{ opacity, ["--wave-opacity" as string]: opacity }}
     >
-      <div className="wave-track flex" style={{ width: "200%" }}>
+      <div className="wave-track flex h-full" style={{ width: "200%" }}>
         {[0, 1].map((tile) => (
           <svg
             key={tile}
             viewBox={`0 0 ${TILE_W} ${MID * 2}`}
             preserveAspectRatio="none"
-            className="h-7 w-1/2 shrink-0"
+            className="h-full min-h-7 w-1/2 shrink-0"
           >
             {BARS.map((bar, i) => (
               <rect

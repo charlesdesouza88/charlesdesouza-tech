@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import Reveal from "@/components/Reveal";
 import Waveform from "@/components/Waveform";
 import PortraitVideo from "@/components/PortraitVideo";
+import AnimatedBar from "@/components/AnimatedBar";
 import {
   profile,
   socials,
@@ -42,6 +43,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function Home() {
   return (
     <div className="grain relative">
+      <div className="scan-line" aria-hidden="true" />
       <Nav />
 
       <main id="main" className="relative z-10">
@@ -81,11 +83,24 @@ export default function Home() {
                   actually want to use.
                 </p>
               </div>
+
+              <div className="mt-10 flex flex-wrap gap-8 border-t border-[var(--line)] pt-8">
+                {[
+                  { n: "25", l: "years of craft" },
+                  { n: "4", l: "hackathons" },
+                  { n: "EN·PT", l: "bilingual" },
+                ].map((s) => (
+                  <div key={s.l} className="border-l border-ember/40 pl-4">
+                    <div className="font-display text-2xl text-ink">{s.n}</div>
+                    <div className="eyebrow mt-1">{s.l}</div>
+                  </div>
+                ))}
+              </div>
             </Reveal>
 
-            <Reveal delay={120}>
+            <Reveal delay={120} variant="scale">
               <figure className="relative mx-auto max-w-sm">
-                <div className="relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
+                <div className="frame-glow relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
                   <PortraitVideo alt="Charles DeSouza — portrait" />
                   <div
                     className="pointer-events-none absolute inset-0"
@@ -104,7 +119,7 @@ export default function Home() {
         </section>
 
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <Waveform color="var(--resonance)" opacity={0.35} />
+          <Waveform color="var(--resonance)" opacity={0.4} className="h-8" />
         </div>
 
         {/* ── WORK ───────────────────────────────────────────── */}
@@ -129,7 +144,8 @@ export default function Home() {
               <Reveal
                 key={p.name}
                 delay={idx * 90}
-                className="group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-surface/60 transition-colors hover:border-[var(--line-strong)]"
+                variant="scale"
+                className="edge-glow group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--line)] bg-surface/60"
               >
                 {p.image && (
                   <Link
@@ -141,7 +157,7 @@ export default function Home() {
                       alt={`${p.name} preview`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
                     />
                     <div
                       className="pointer-events-none absolute inset-0"
@@ -242,7 +258,7 @@ export default function Home() {
               {moreProjects.map((p) => (
                 <div
                   key={p.name}
-                  className="flex flex-col rounded-xl border border-[var(--line)] bg-surface/40 p-5 transition-colors hover:border-[var(--line-strong)]"
+                  className="edge-glow flex flex-col rounded-xl border border-[var(--line)] bg-surface/40 p-5"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
@@ -282,8 +298,8 @@ export default function Home() {
             </div>
           </Reveal>
 
-          <Reveal className="mt-14">
-            <figure className="relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
+          <Reveal className="mt-14" variant="fade">
+            <figure className="frame-glow relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
               <Image
                 src="/img/hackathon.jpg"
                 alt="A packed room of builders at the EasyA × Algorand hackathon, Charles among them"
@@ -348,10 +364,11 @@ export default function Home() {
               {experience.map((r, idx) => (
                 <Reveal
                   key={r.title + r.org}
-                  delay={idx * 60}
+                  delay={idx * 80}
+                  variant="left"
                   className="relative border-l border-[var(--line)] pb-10 pl-7 last:pb-0"
                 >
-                  <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-ember" />
+                  <span className="timeline-dot-in absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-ember shadow-[0_0_12px_color-mix(in_srgb,var(--ember)_60%,transparent)]" />
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4">
                     <h3 className="text-lg text-ink">
                       {r.title} <span className="text-muted">· {r.org}</span>
@@ -379,7 +396,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── FACETS (playful layer) ─────────────────────────── */}
+        {/* ── FACETS ─────────────────────────────────────────── */}
         <section
           id="facets"
           className="scroll-mt-24 border-y border-[var(--line)] bg-bg2/60 py-24 sm:py-32"
@@ -405,7 +422,8 @@ export default function Home() {
                 <Reveal
                   key={f.key}
                   delay={idx * 90}
-                  className="group flex flex-col rounded-2xl border border-[var(--line)] bg-surface/70 p-7 transition-all hover:-translate-y-1 hover:border-ember/40"
+                  variant="scale"
+                  className="edge-glow group flex flex-col rounded-2xl border border-[var(--line)] bg-surface/70 p-7 hover:-translate-y-1"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-display text-3xl text-ember">
@@ -429,12 +447,7 @@ export default function Home() {
                           <span>{s.label}</span>
                           <span>{s.value}/10</span>
                         </div>
-                        <div className="mt-1 h-1 overflow-hidden rounded-full bg-[var(--line)]">
-                          <span
-                            className="block h-full rounded-full bg-ember/80"
-                            style={{ width: `${s.value * 10}%` }}
-                          />
-                        </div>
+                        <AnimatedBar value={s.value} />
                       </div>
                     ))}
                   </div>
@@ -464,19 +477,22 @@ export default function Home() {
             <Reveal>
               <SectionLabel>The toolkit</SectionLabel>
               <div className="grid gap-x-8 gap-y-7 sm:grid-cols-2">
-                {skills.map((s) => (
+                {skills.map((s, gi) => (
                   <div key={s.group}>
                     <h3 className="mb-3 font-mono text-xs uppercase tracking-[0.15em] text-ember">
                       {s.group}
                     </h3>
                     <ul className="flex flex-wrap gap-2">
-                      {s.items.map((it) => (
-                        <li
+                      {s.items.map((it, ii) => (
+                        <Reveal
                           key={it}
-                          className="rounded-md border border-[var(--line)] px-2.5 py-1 text-sm text-muted"
+                          delay={gi * 40 + ii * 30}
+                          variant="fade"
+                          as="li"
+                          className="rounded-md border border-[var(--line)] px-2.5 py-1 text-sm text-muted transition-colors hover:border-ember/40 hover:text-ink"
                         >
                           {it}
-                        </li>
+                        </Reveal>
                       ))}
                     </ul>
                   </div>
@@ -492,7 +508,7 @@ export default function Home() {
                     key={e}
                     className="flex gap-3 text-sm leading-relaxed text-muted"
                   >
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-resonance" />
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-resonance shadow-[0_0_8px_color-mix(in_srgb,var(--resonance)_50%,transparent)]" />
                     {e}
                   </li>
                 ))}
@@ -504,18 +520,26 @@ export default function Home() {
         {/* ── CONTACT ────────────────────────────────────────── */}
         <section
           id="contact"
-          className="relative scroll-mt-24 border-t border-[var(--line)] px-5 py-28 sm:px-8 sm:py-36"
+          className="relative scroll-mt-24 overflow-hidden border-t border-[var(--line)] px-5 py-28 sm:px-8 sm:py-36"
         >
+          <div
+            className="pointer-events-none absolute inset-0 -z-10"
+            aria-hidden="true"
+            style={{
+              background:
+                "radial-gradient(70% 50% at 50% 100%, color-mix(in srgb, var(--ember) 14%, transparent), transparent 70%), radial-gradient(50% 40% at 80% 20%, color-mix(in srgb, var(--resonance) 8%, transparent), transparent 60%)",
+            }}
+          />
           <div className="mx-auto max-w-4xl text-center">
-            <Reveal className="mb-14">
-              <div className="relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
+            <Reveal className="mb-14" variant="fade">
+              <div className="frame-glow relative overflow-hidden rounded-2xl border border-[var(--line-strong)]">
                 <Image
                   src="/img/studio.jpg"
                   alt="Charles in black, seated on a couch against a wall of industrial windows"
                   width={864}
                   height={1184}
                   sizes="(max-width: 896px) 100vw, 896px"
-                  className="h-auto w-full object-cover object-[center_42%] aspect-[3/2] sm:aspect-[21/9]"
+                  className="aspect-[3/2] h-auto w-full object-cover object-[center_42%] sm:aspect-[21/9]"
                 />
                 <div
                   className="pointer-events-none absolute inset-0"
@@ -546,7 +570,7 @@ export default function Home() {
               <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
                 <a
                   href={`mailto:${profile.email}`}
-                  className="rounded-full bg-ember px-7 py-3.5 font-mono text-sm font-medium text-bg transition-transform hover:-translate-y-0.5"
+                  className="btn-glow btn-glow-primary rounded-full bg-ember px-7 py-3.5 font-mono text-sm font-medium text-bg"
                 >
                   {profile.email}
                 </a>
@@ -554,7 +578,7 @@ export default function Home() {
                   href="/Charles_DeSouza_Resume.pdf"
                   target="_blank"
                   rel="noreferrer"
-                  className="rounded-full border border-[var(--line-strong)] px-7 py-3.5 font-mono text-sm text-ink transition-colors hover:border-ember hover:text-ember"
+                  className="btn-glow btn-glow-ghost rounded-full border border-line-strong px-7 py-3.5 font-mono text-sm text-ink hover:border-ember hover:text-ember"
                 >
                   Download résumé ↓
                 </a>

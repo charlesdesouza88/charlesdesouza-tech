@@ -5,15 +5,16 @@ import Link from "next/link";
 import CmdMark from "./CmdMark";
 
 const links = [
-  { href: "/#work", label: "Work" },
-  { href: "/#method", label: "Method" },
-  { href: "/#facets", label: "Facets" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/#work", id: "work", label: "Work" },
+  { href: "/#method", id: "method", label: "Method" },
+  { href: "/#facets", id: "facets", label: "Facets" },
+  { href: "/#contact", id: "contact", label: "Contact" },
 ];
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState<string>("");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -22,7 +23,30 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close the menu with Escape
+  useEffect(() => {
+    const ids = links.map((l) => l.id);
+    const els = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+
+    if (els.length === 0) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target?.id) {
+          setActive(visible[0].target.id);
+        }
+      },
+      { rootMargin: "-30% 0px -50% 0px", threshold: [0, 0.25, 0.5] }
+    );
+
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -54,26 +78,25 @@ export default function Nav() {
           </span>
         </Link>
 
-        {/* Desktop links */}
         <div className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="py-2 font-mono text-xs uppercase tracking-[0.15em] text-muted transition-colors hover:text-ink"
+              data-active={active === l.id ? "true" : "false"}
+              className="nav-link py-2 font-mono text-xs uppercase tracking-[0.15em] text-muted transition-colors hover:text-ink data-[active=true]:text-ink"
             >
               {l.label}
             </Link>
           ))}
           <a
             href="mailto:charlesdesouza88@gmail.com"
-            className="rounded-full border border-ember/40 bg-ember/10 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-ember transition-colors hover:bg-ember hover:text-bg"
+            className="btn-glow btn-glow-ghost rounded-full border border-ember/40 bg-ember/10 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.15em] text-ember transition-colors hover:bg-ember hover:text-bg"
           >
             Hire me
           </a>
         </div>
 
-        {/* Mobile menu button — 44px tap target */}
         <button
           type="button"
           aria-expanded={open}
@@ -102,7 +125,6 @@ export default function Nav() {
         </button>
       </nav>
 
-      {/* Mobile menu panel */}
       <div
         id="mobile-menu"
         hidden={!open}

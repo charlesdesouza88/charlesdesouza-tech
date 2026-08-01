@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
+import { Fraunces, Outfit, JetBrains_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { profile, socials } from "@/lib/content";
 import "./globals.css";
@@ -11,7 +11,7 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
-const inter = Inter({
+const outfit = Outfit({
   variable: "--font-body",
   subsets: ["latin"],
 });
@@ -86,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${inter.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${outfit.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="min-h-full">
         <script

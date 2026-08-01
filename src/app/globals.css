@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
-/* ── Design tokens: "studio at night" ───────────────────────────── */
+/* ── Design tokens: "studio at night" → craft-tech ──────────────── */
 :root {
-  --bg: #14110f;
-  --bg-2: #1a1613;
-  --surface: #1e1a17;
-  --surface-2: #24201c;
+  --bg: #121010;
+  --bg-2: #181512;
+  --surface: #1c1916;
+  --surface-2: #23201c;
   --ink: #f2ebe3;
   --muted: #a79b8e;
   --faint: #8b8073; /* ≥4.5:1 on --bg for small text (WCAG AA) */
@@ -13,6 +13,11 @@
   --resonance: #6fb6a6;
   --line: rgba(242, 235, 227, 0.09);
   --line-strong: rgba(242, 235, 227, 0.16);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-soft: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --duration-reveal: 0.75s;
+  --duration-hover: 0.28s;
 }
 
 @theme inline {
@@ -26,6 +31,7 @@
   --color-ember: var(--ember);
   --color-resonance: var(--resonance);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
@@ -47,6 +53,8 @@ body {
   font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 ::selection {
@@ -79,12 +87,6 @@ button:focus-visible {
   top: 1rem;
 }
 
-/* Respect notches / home indicators on phones */
-body {
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
 /* ── Typographic helpers ────────────────────────────────────────── */
 .font-display {
   font-family: var(--font-display), Georgia, serif;
@@ -97,36 +99,263 @@ body {
   color: var(--faint);
 }
 
-/* Warm atmosphere glow */
+/* ── Atmosphere: glow + perspective grid + soft scan ────────────── */
 .grain::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       120% 80% at 50% -10%,
-      color-mix(in srgb, var(--ember) 9%, transparent),
+      color-mix(in srgb, var(--ember) 11%, transparent),
       transparent 55%
     ),
     radial-gradient(
       90% 60% at 90% 110%,
-      color-mix(in srgb, var(--resonance) 7%, transparent),
+      color-mix(in srgb, var(--resonance) 8%, transparent),
       transparent 60%
+    ),
+    radial-gradient(
+      60% 40% at 10% 60%,
+      color-mix(in srgb, var(--ember) 4%, transparent),
+      transparent 70%
     );
 }
 
-/* ── Motion: scroll reveal ──────────────────────────────────────── */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--ink) 4.5%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--ink) 4.5%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 72px 72px;
+  mask-image: radial-gradient(
+    ellipse 85% 70% at 50% 40%,
+    black 15%,
+    transparent 75%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 85% 70% at 50% 40%,
+    black 15%,
+    transparent 75%
+  );
+}
+
+@keyframes scan-drift {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+.scan-line {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 1;
+  height: 120px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--ember) 4%, transparent),
+    transparent
+  );
+  animation: scan-drift 14s linear infinite;
+  opacity: 0.55;
+}
+
+/* ── Edge glow on interactive surfaces ──────────────────────────── */
+.edge-glow {
+  transition:
+    border-color var(--duration-hover) var(--ease-out-soft),
+    box-shadow var(--duration-hover) var(--ease-out-soft),
+    transform var(--duration-hover) var(--ease-out-soft);
+}
+.edge-glow:hover {
+  border-color: color-mix(in srgb, var(--ember) 35%, var(--line-strong));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--ember) 12%, transparent),
+    0 12px 40px -16px color-mix(in srgb, var(--ember) 28%, transparent);
+}
+
+.edge-glow-resonance:hover {
+  border-color: color-mix(in srgb, var(--resonance) 40%, var(--line-strong));
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--resonance) 14%, transparent),
+    0 12px 40px -16px color-mix(in srgb, var(--resonance) 26%, transparent);
+}
+
+.frame-glow {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--ember) 18%, transparent),
+    0 24px 60px -28px color-mix(in srgb, var(--ember) 35%, transparent);
+}
+
+/* ── CTA glow buttons ───────────────────────────────────────────── */
+.btn-glow {
+  position: relative;
+  transition:
+    transform var(--duration-hover) var(--ease-out-soft),
+    box-shadow var(--duration-hover) var(--ease-out-soft),
+    background-color var(--duration-hover) var(--ease-out-soft),
+    color var(--duration-hover) var(--ease-out-soft),
+    border-color var(--duration-hover) var(--ease-out-soft);
+}
+.btn-glow-primary {
+  box-shadow: 0 0 24px -6px color-mix(in srgb, var(--ember) 55%, transparent);
+}
+.btn-glow-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 36px -4px color-mix(in srgb, var(--ember) 75%, transparent);
+}
+.btn-glow-ghost:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px -10px color-mix(in srgb, var(--ember) 40%, transparent);
+}
+
+/* Live availability pulse */
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--resonance) 50%, transparent);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--resonance);
+  animation: live-pulse 2.4s var(--ease-out-soft) infinite;
+}
+
+/* ── Motion: scroll reveal variants ─────────────────────────────── */
 .reveal {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.2, 0.6, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+  transition:
+    opacity var(--duration-reveal) var(--ease-out-expo),
+    transform var(--duration-reveal) var(--ease-out-expo);
   will-change: opacity, transform;
+}
+.reveal-up {
+  transform: translateY(22px);
+}
+.reveal-fade {
+  transform: none;
+}
+.reveal-left {
+  transform: translateX(-18px);
+}
+.reveal-scale {
+  transform: scale(0.96);
 }
 .reveal.in {
   opacity: 1;
   transform: none;
+}
+
+/* Hero entrance choreography */
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.hero-enter {
+  opacity: 0;
+  animation: hero-enter 0.85s var(--ease-out-expo) forwards;
+}
+.hero-enter-1 {
+  animation-delay: 0.05s;
+}
+.hero-enter-2 {
+  animation-delay: 0.18s;
+}
+.hero-enter-3 {
+  animation-delay: 0.32s;
+}
+.hero-enter-4 {
+  animation-delay: 0.46s;
+}
+.hero-enter-5 {
+  animation-delay: 0.6s;
+}
+
+/* Word wipe for hero rotating mediums */
+@keyframes word-wipe {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(0.4em);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0% 0);
+    transform: none;
+  }
+}
+.word-wipe {
+  display: inline-block;
+  animation: word-wipe 0.55s var(--ease-out-expo) both;
+}
+
+/* Timeline draw accent — plays when parent Reveal is in */
+@keyframes timeline-dot {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.timeline-dot-in {
+  transform: scale(0);
+  opacity: 0;
+}
+.reveal.in .timeline-dot-in {
+  animation: timeline-dot 0.45s var(--ease-out-expo) both;
+}
+
+/* Facet / progress bars */
+.bar-fill {
+  width: 0;
+  transition: width 1s var(--ease-out-expo);
+}
+.bar-fill.in {
+  /* width set inline via style */
+}
+
+/* Stagger children when parent has .in */
+.stagger-children > .reveal {
+  transition-delay: calc(var(--stagger-i, 0) * 70ms);
 }
 
 /* ── Signature waveform drift ───────────────────────────────────── */
@@ -142,16 +371,75 @@ body {
   animation: drift 16s linear infinite;
 }
 
+@keyframes wave-pulse {
+  0%,
+  100% {
+    opacity: var(--wave-opacity, 0.6);
+  }
+  50% {
+    opacity: calc(var(--wave-opacity, 0.6) * 1.35);
+  }
+}
+.wave-pulse {
+  animation: wave-pulse 2.2s var(--ease-out-soft) infinite;
+}
+
+/* Nav section underline */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--ember);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-hover) var(--ease-out-soft);
+}
+.nav-link[data-active="true"]::after,
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .reveal {
+  .reveal,
+  .reveal-up,
+  .reveal-fade,
+  .reveal-left,
+  .reveal-scale {
     opacity: 1;
     transform: none;
     transition: none;
   }
-  .wave-track {
-    animation: none;
+  .wave-track,
+  .wave-pulse,
+  .scan-line,
+  .live-dot,
+  .hero-enter,
+  .word-wipe,
+  .timeline-dot-in {
+    animation: none !important;
+  }
+  .hero-enter {
+    opacity: 1;
+  }
+  .timeline-dot-in {
+    transform: none;
+    opacity: 1;
+  }
+  .bar-fill {
+    transition: none;
+  }
+  .btn-glow-primary:hover,
+  .btn-glow-ghost:hover,
+  .edge-glow:hover {
+    transform: none;
   }
 }
