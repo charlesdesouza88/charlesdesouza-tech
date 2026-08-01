@@ -157,7 +157,7 @@ export default function Home() {
                       alt={`${p.name} preview`}
                       fill
                       sizes="(max-width: 1024px) 100vw, 33vw"
-                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+                      className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.04]"
                     />
                     <div
                       className="pointer-events-none absolute inset-0"
